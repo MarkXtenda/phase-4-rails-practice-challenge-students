@@ -1,7 +1,7 @@
 class InstructorsController < ApplicationController
     rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
     rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
-    
+
     def index
         instructors = Instructor.all
         render json: instructors, status: 200
@@ -19,7 +19,14 @@ class InstructorsController < ApplicationController
             render json: instructor
         end
     end
-
+    
+    def destroy 
+        instructor = Instructor.find(params[:id])
+        if instructor
+            destroy_instructor = instructor.destroy!
+            head :no_content
+        end
+    end
     private
 
     def permited_params

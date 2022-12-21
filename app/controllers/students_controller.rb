@@ -1,7 +1,7 @@
 class StudentsController < ApplicationController
     rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
     rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
-    
+
     def index
         students = Student.all
         render json: students, status: 200
@@ -17,6 +17,14 @@ class StudentsController < ApplicationController
         if student
             updated_student = student.update!(permited_params)
             render json: updated_student
+        end
+    end
+
+    def destroy 
+        student = Student.find(params[:id])
+        if student
+            destroy_student = student.destroy!
+            head :no_content
         end
     end
 
